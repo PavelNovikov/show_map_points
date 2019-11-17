@@ -1,0 +1,43 @@
+
+<head>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=>>apikey<<&lang=ru_RU" type="text/javascript">
+    </script>
+</head>
+<body>
+    <div id="map" style="width: 600px; height: 400px"></div>
+</body>
+<script type="text/javascript">
+
+ ymaps.ready(init);
+
+ function init() {
+     var myMap = new ymaps.Map('map', {
+         center: [55.753994, 37.622093],
+         zoom: 9
+     });
+
+     addresses = >>addresses<<;
+     all_geocodes = [];
+     for (i=0; i < addresses.length; i++) {
+       addresses[i] = 'Москва,' + addresses[i];
+       var geocode = ymaps.geocode(addresses[i], {
+           results: 1
+       });
+       geocode.then(function (res) {
+               var firstGeoObject = res.geoObjects.get(0);
+
+               myMap.geoObjects.add(firstGeoObject);
+               myMap.setBounds(myMap.geoObjects.getBounds(), {
+                   checkZoomRange: true
+               });
+        });
+        all_geocodes.push(geocode);
+        Promise.all(all_geocodes).then(function(){
+          myMap.setBounds(myMap.geoObjects.getBounds(), {
+              checkZoomRange: true
+          });
+        });
+     }
+
+ }
+</script>

@@ -19,7 +19,7 @@
      addresses = >>addresses<<;
      all_geocodes = [];
      for (i=0; i < addresses.length; i++) {
-       addresses[i] = 'Москва,' + addresses[i];
+       addresses[i] = addresses[i];
        var geocode = ymaps.geocode(addresses[i], {
            results: 1
        });
